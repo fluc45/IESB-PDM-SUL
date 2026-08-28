@@ -34,13 +34,13 @@ export default function App() {
 
 const styles = StyleSheet.create({
   botao: {
-    width: "25%",
+    width: "27.5%",
   },
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    paddingTop: 16,
+    alignItems: "center", //centraliza botao no meio do container
+    padding: 16,
   },
   itemLista: {
     backgroundColor: "lightblue",
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     flex: 10,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "flex-start",
     paddingTop: 16,
   },
   safeArea: {
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flexDirection: "row",
-    alignSelf: "center",
+    alignSelf: "center", //centralizar sem precisar de um container
     borderWidth: 1,
     borderColor: "black",
     borderRadius: 8,
@@ -77,3 +76,4 @@ const styles = StyleSheet.create({
     width: "70%",
   },
 });
+// como a maioria dos elementos é centralizado em relação ao eixo y, utiliza-se o alignItems ao invés de justifyContent
