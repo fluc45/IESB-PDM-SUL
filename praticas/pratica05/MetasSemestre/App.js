@@ -1,14 +1,25 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View, Text } from "react-native";
 import { useState } from "react";
 import MetaList from "./components/MetaList";
 import MetaInput from "./components/MetaInput";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
+import { titulo_app } from "./labels";
 
 export default function App() {
   const [metas, setMetas] = useState([]);
 
   function adicionarMetaHandler(inputMeta) {
-    const novaMeta = { id: Math.random().toString(), texto: inputMeta };
+    const novaMeta = {
+      id: Date.now().toString(),
+      texto: inputMeta,
+      criadaEm: new Date().toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
     setMetas([...metas, novaMeta]);
   }
 
@@ -20,12 +31,13 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.screen}>
         <View style={styles.headerContainer}>
           <Image
             style={styles.iconApp}
             source={require("./assets/favicon.png")}
           />
+          <Text style={styles.headerText}>{titulo_app}</Text>
         </View>
         <View style={styles.mainContainer}>
           <MetaInput onAddMeta={adicionarMetaHandler} />
@@ -40,13 +52,23 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: "lightgray", //#A47DAB <-- lilás
+  },
   container: {
     alignItems: "center",
     justifyContent: "center",
   },
   headerContainer: {
     alignItems: "center",
-    marginTop: 20,
+    flexDirection: "row",
+    marginTop: 24,
+    paddingHorizontal: 30,
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: "bold",
   },
   item: {
     margin: 8,
@@ -55,8 +77,9 @@ const styles = StyleSheet.create({
     backgroundColor: "lightblue",
   },
   iconApp: {
-    width: 50,
-    height: 50,
+    width: 48,
+    height: 48,
+    marginRight: 50,
   },
   mainContainer: {
     marginTop: 20,

@@ -22,7 +22,7 @@ function MetaInput(props) {
         flex: 1,
       }}
     >
-      <View style={{ width: "65%" }}>
+      <View style={{ width: "70%" }}>
         <TextInput
           style={styles.inputText}
           placeholder={placeholder_input}
@@ -30,7 +30,7 @@ function MetaInput(props) {
         />
       </View>
 
-      <View style={{ width: "30%" }}>
+      <View style={{ width: "27.5%" }}>
         <Button
           title={texto_botao}
           onPress={addMetaHandler}

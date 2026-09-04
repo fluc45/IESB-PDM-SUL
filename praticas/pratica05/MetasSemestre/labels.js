@@ -1,4 +1,4 @@
-const titulo_app = "Meu Diario Academico"
+const titulo_app = "Metas do Semestre"
 const placeholder_input = "cadastrar nome da disciplina"
 const texto_botao = "Adicionar"
 const titulo_lista = "Minhas disciplinas"
