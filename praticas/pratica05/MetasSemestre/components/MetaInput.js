@@ -1,41 +1,34 @@
-import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Text } from "react-native";
+import React from "react";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { placeholder_input, texto_botao } from "../labels";
 
-function MetaInput(props) {
-  const [inputMetaText, setInputMetaText] = useState("");
-
-  function metaInputHandler(inputText) {
-    setInputMetaText(inputText);
-  }
-
-  function addMetaHandler(){
-    props.onAddMeta(inputMetaText);
-    setInputMetaText('');
-  }
-
+function MetaInput({ value, onChangeText, onAdd }) {
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        flex: 1,
-      }}
-    >
-      <View style={{ width: "70%" }}>
+    <View style={styles.container}>
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.inputText}
           placeholder={placeholder_input}
-          onChangeText={metaInputHandler}
+          value={value}
+          onChangeText={onChangeText}
+          returnKeyType="done"
+          onSubmitEditing={onAdd}
         />
       </View>
 
-      <View style={{ width: "27.5%" }}>
-        <Button
-          title={texto_botao}
-          onPress={addMetaHandler}
-        />
-      </View>
+      <Pressable
+        style={styles.button}
+        onPress={onAdd}
+        android_ripple={{ color: "rgba(255,255,255,0.25)" }}
+      >
+        <Text style={styles.buttonText}>{texto_botao}</Text>
+      </Pressable>
     </View>
   );
 }
@@ -43,8 +36,35 @@ function MetaInput(props) {
 export default MetaInput;
 
 const styles = StyleSheet.create({
-    inputText: {
-        borderColor: "#cccccc",
-        borderWidth: 1,
-      },
-})
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 14,
+  },
+  inputContainer: {
+    flex: 1,
+  },
+  inputText: {
+    borderColor: "#d6d0dd",
+    borderWidth: 1,
+    borderRadius: 12,
+    backgroundColor: "#ffffff",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 16,
+    color: "#2e1f41",
+  },
+  button: {
+    backgroundColor: "#7a4d9b",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "#ffffff",
+    fontWeight: "700",
+  },
+});

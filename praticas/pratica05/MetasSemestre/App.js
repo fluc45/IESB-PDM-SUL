@@ -1,17 +1,76 @@
-import { Image, StyleSheet, View, Text } from "react-native";
-import { useState } from "react";
-import MetaList from "./components/MetaList";
+import { useEffect, useState } from "react";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import MetaInput from "./components/MetaInput";
-import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
+import MetaList from "./components/MetaList";
 import { titulo_app } from "./labels";
+
+const STORAGE_KEY = "@metas_semestre";
 
 export default function App() {
   const [metas, setMetas] = useState([]);
+  const [inputMeta, setInputMeta] = useState("");
+  const [carregada, setCarregada] = useState(false);
 
-  function adicionarMetaHandler(inputMeta) {
+  useEffect(() => {
+    async function carregarMetas() {
+      try {
+        const metasSalvas = await AsyncStorage.getItem(STORAGE_KEY);
+
+        if (!metasSalvas) {
+          setCarregada(true);
+          return;
+        }
+
+        const metasParseadas = JSON.parse(metasSalvas);
+
+        if (Array.isArray(metasParseadas)) {
+          setMetas(metasParseadas);
+        }
+      } catch (error) {
+        Alert.alert("Erro", "Não foi possível carregar suas metas salvas.");
+      } finally {
+        setCarregada(true);
+      }
+    }
+
+    carregarMetas();
+  }, []);
+
+  useEffect(() => {
+    if (!carregada) {
+      return;
+    }
+
+    async function salvarMetas() {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(metas));
+      } catch (error) {
+        Alert.alert("Erro", "Não foi possível salvar as metas no dispositivo.");
+      }
+    }
+
+    salvarMetas();
+  }, [metas, carregada]);
+
+  function adicionarMetaHandler() {
+    const texto = inputMeta.trim();
+
+    if (!texto) {
+      Alert.alert("Campo vazio", "Digite uma meta antes de adicionar.");
+      return;
+    }
+
     const novaMeta = {
       id: Date.now().toString(),
-      texto: inputMeta,
+      texto,
       criadaEm: new Date().toLocaleString("pt-BR", {
         day: "2-digit",
         month: "2-digit",
@@ -19,31 +78,54 @@ export default function App() {
         hour: "2-digit",
         minute: "2-digit",
       }),
+      concluida: false,
     };
-    setMetas([...metas, novaMeta]);
+
+    setMetas((metasAtuais) => [novaMeta, ...metasAtuais]);
+    setInputMeta("");
   }
 
   function deletarMetaHandler(id) {
-    console.log(id);
-    const novasMetas = metas.filter((meta) => meta.id !== id);
-    setMetas(novasMetas);
+    setMetas((metasAtuais) => metasAtuais.filter((meta) => meta.id !== id));
   }
+
+  function toggleMetaHandler(id) {
+    setMetas((metasAtuais) =>
+      metasAtuais.map((meta) =>
+        meta.id === id ? { ...meta, concluida: !meta.concluida } : meta,
+      ),
+    );
+  }
+
+  const pendentes = metas.filter((meta) => !meta.concluida).length;
+  const concluidas = metas.length - pendentes;
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.screen}>
         <View style={styles.headerContainer}>
-          <Image
-            style={styles.iconApp}
-            source={require("./assets/favicon.png")}
-          />
-          <Text style={styles.headerText}>{titulo_app}</Text>
+          <Image style={styles.iconApp} source={require("./assets/favicon.png")} />
+          <View style={styles.titleGroup}>
+            <Text style={styles.headerText}>{titulo_app}</Text>
+            <Text style={styles.counterText}>
+              {pendentes} pendentes / {concluidas} concluídas
+            </Text>
+          </View>
         </View>
+
         <View style={styles.mainContainer}>
-          <MetaInput onAddMeta={adicionarMetaHandler} />
+          <MetaInput
+            value={inputMeta}
+            onChangeText={setInputMeta}
+            onAdd={adicionarMetaHandler}
+          />
 
           <View style={styles.metaContainer}>
-            <MetaList array={metas} onDeleteItem={deletarMetaHandler} />
+            <MetaList
+              metas={metas}
+              onDelete={deletarMetaHandler}
+              onToggleConcluida={toggleMetaHandler}
+            />
           </View>
         </View>
       </SafeAreaView>
@@ -54,40 +136,42 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "lightgray", //#A47DAB <-- lilás
-  },
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#f3f1f7",
   },
   headerContainer: {
-    alignItems: "center",
     flexDirection: "row",
-    marginTop: 24,
-    paddingHorizontal: 30,
+    alignItems: "center",
+    paddingHorizontal: 24,
+    paddingTop: 18,
+    paddingBottom: 10,
+  },
+  titleGroup: {
+    flex: 1,
   },
   headerText: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#2e1f41",
   },
-  item: {
-    margin: 8,
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: "lightblue",
+  counterText: {
+    marginTop: 4,
+    fontSize: 14,
+    color: "#5a4a6d",
+    fontWeight: "600",
   },
   iconApp: {
-    width: 48,
-    height: 48,
-    marginRight: 50,
+    width: 52,
+    height: 52,
+    marginRight: 16,
+    borderRadius: 12,
   },
   mainContainer: {
-    marginTop: 20,
-    padding: 30,
     flex: 1,
-    flexDirection: "column",
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   metaContainer: {
-    flex: 15,
+    flex: 1,
+    marginTop: 12,
   },
 });

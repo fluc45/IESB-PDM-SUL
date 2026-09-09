@@ -1,6 +1,6 @@
-const titulo_app = "Metas do Semestre"
-const placeholder_input = "cadastrar nome da disciplina"
-const texto_botao = "Adicionar"
-const titulo_lista = "Minhas disciplinas"
+const titulo_app = "Metas do Semestre";
+const placeholder_input = "Digite sua meta";
+const texto_botao = "Adicionar";
+const titulo_lista = "Minhas metas";
 
-export {placeholder_input, texto_botao, titulo_app, titulo_lista }
+export { placeholder_input, texto_botao, titulo_app, titulo_lista };
