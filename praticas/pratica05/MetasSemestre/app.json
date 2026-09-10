@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-atividade-aula-tarefas",
-    "slug": "app-atividade-aula-tarefas",
+    "name": "MetasSemestre",
+    "slug": "MetasSemestre",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,9 +24,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-status-bar"
-    ]
+    }
   }
 }
