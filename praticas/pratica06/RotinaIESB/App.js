@@ -71,7 +71,12 @@ export default function App() {
             style={styles.headerImage}
             source={require("./assets/logo.png")}
           />
-          <Text style={styles.headerText}>{tituloApp}</Text>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerText}>{tituloApp}</Text>
+            <Text style={styles.pendingText}>
+              {compromissos.length} pendente{compromissos.length === 1 ? "" : "s"}
+            </Text>
+          </View>
         </View>
         <View style={styles.main}>
           <View style={styles.input}>
@@ -115,8 +120,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#c41200",
   },
+  headerTextContainer: {
+    alignItems: "center",
+  },
+  pendingText: {
+    marginTop: 2,
+    color: "#555",
+    fontSize: 14,
+  },
   main: {
     flex: 6.5,
+    flexDirection: "column",
   },
   input: {
     paddingVertical: 12,
