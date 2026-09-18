@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar"; //provavelmente não vai precisar usar, excluir se for o caso
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, Alert } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -7,7 +6,7 @@ import CompromissoInput from "./components/CompromissoInput";
 import CompromissoList from "./components/CompromissoList";
 import { tituloApp } from "./labels";
 
-const CHAVE_STORAGE = '@rotina_iesb_compromissos'
+const CHAVE_STORAGE = "@rotina_iesb_compromissos";
 
 export default function App() {
   const [textoInput, setTextoInput] = useState("");
@@ -16,19 +15,18 @@ export default function App() {
 
   useEffect(() => {
     async function carregarDados() {
-
-      try{
+      try {
         const dadosSalvos = await AsyncStorage.getItem(CHAVE_STORAGE);
-      if (dadosSalvos !== null) {
-        setCompromissos(JSON.parse(dadosSalvos));
+        if (dadosSalvos !== null) {
+          setCompromissos(JSON.parse(dadosSalvos));
+        }
+      } catch (e) {
+        Alert.alert("Erro", "Falha ao carregar os compromissos salvos");
+      } finally {
+        setCarregado(true);
       }
-    } catch (e) {
-      Alert.alert('Erro', 'Falha ao carregar os compromisso salvos')
-    } finally {
-      setCarregado(true)
     }
-  }
-  carregarDados();
+    carregarDados();
   }, []);
 
   useEffect(() => {
@@ -36,26 +34,33 @@ export default function App() {
 
     async function salvarDados() {
       try {
-        await AsyncStorage.setItem(CHAVE_STORAGE, JSON.stringify(compromissos))
+        await AsyncStorage.setItem(CHAVE_STORAGE, JSON.stringify(compromissos));
       } catch (e) {
-        Alert.alert('Erro', 'Falha ao salvar as alterações')
-      }      
+        Alert.alert("Erro", "Falha ao salvar as alterações");
+      }
     }
     salvarDados();
-}, [compromissos, carregado]);
+  }, [compromissos, carregado]);
 
-  // Função para adicionar um novo item na lista
   const adicionarCompromisso = () => {
-    if (textoInput.trim() === "") return; // Não adiciona texto vazio
+    if (textoInput.trim() === "") {
+      Alert.alert("Alerta", "Por favor, insira um compromisso");
+      return;
+    }
 
-    const novoItem = { id: Date.now().toString(), texto: textoInput };
-    setCompromissos([...compromissos, novoItem]); // Atualiza o array
-    setTextoInput(""); // Limpa o campo
+    const novoItem = {
+      id: Date.now().toString(),
+      texto: textoInput,
+      criadoEm: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+    setCompromissos([...compromissos, novoItem]);
+    setTextoInput("");
   };
 
   const removerCompromisso = (id) => {
-    // Mantém na lista apenas os itens com id DIFERENTE do id que foi clicado
-    setCompromissos((listaAtual) => listaAtual.filter((item) => item.id !== id));
+    setCompromissos((listaAtual) =>
+      listaAtual.filter((item) => item.id !== id)
+    );
   };
 
   return (
@@ -91,40 +96,33 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: "#f2f2f1",
   },
   header: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "center",
+    paddingHorizontal: 16,
   },
   headerImage: {
-    margin: 32,
-    width: 64,
-    height: 64,
+    width: 48,
+    height: 48,
+    marginRight: 12,
   },
   headerText: {
-    marginLeft: "auto",
-    marginRight: 85,
-    fontSize: 32,
+    fontSize: 26,
     fontWeight: "bold",
-    color: "red",
+    color: "#c41200",
   },
   main: {
     flex: 6.5,
-    backgroundColor: "yellow",
   },
   input: {
-    backgroundColor: "green",
+    paddingVertical: 12,
+    paddingHorizontal: 8,
   },
   list: {
-    backgroundColor: "blue",
     flex: 1,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
