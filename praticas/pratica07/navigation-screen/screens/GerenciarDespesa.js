@@ -1,8 +1,8 @@
-import { Text } from "react"
+import { Text } from "react-native"
 
 function GerenciarDespesa() {
     return (
-        <Text>{"GerenciarDespesa"}</Text>
+        <Text>Gerenciar Despesa</Text>
     );
 };
 

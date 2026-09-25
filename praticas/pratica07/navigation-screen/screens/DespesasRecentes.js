@@ -1,8 +1,8 @@
-import { Text } from "react"
+import { Text } from "react-native"
 
 function DespesasRecentes() {
     return (
-        <Text>{"DespesasRecentes"}</Text>
+        <Text>Despesas Recentes</Text>
     );
 };
 
