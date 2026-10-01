@@ -6,6 +6,7 @@ import DespesasRecentes from './screens/DespesasRecentes';
 import GerenciarDespesa from './screens/GerenciarDespesa';
 import TodasDespesas from './screens/TodasDespesas';
 import { NavigationContainer } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function App() {
 
@@ -15,8 +16,8 @@ export default function App() {
 
     return (
       <Tab.Navigator>
-        <Tab.Screen name="DespesasRecentes" component={DespesasRecentes}/>
-        <Tab.Screen name="TodasDespesas" component={TodasDespesas}/>
+        <Tab.Screen name="DespesasRecentes" component={DespesasRecentes} options={{tabBarIcon: ({color, size}) => (<Ionicons name="hourglass" size={size} color={color} />), tabBarLabel: 'Recentes', title: 'Despesas Recentes', tabBarLabelStyle: { fontSize: 12 }}} />
+        <Tab.Screen name="TodasDespesas" component={TodasDespesas} options={{tabBarIcon:({color, size}) => (<Ionicons name="wallet-outline" size={size} color={color} />), tabBarLabel: 'Todas', title: 'Todas as Despesas', tabBarLabelStyle: { fontSize: 12 } }} />
       </Tab.Navigator>
     );
   }
