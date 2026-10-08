@@ -1,5 +1,19 @@
+import { StyleSheet, Text, View } from "react-native";
+
 function GerenciarDespesa() {
-    return
+    return (
+        <View style={styles.container}>
+            <Text>Gerenciar Despesa</Text>
+        </View>
+    );
 }
 
-export default GerenciarDespesa
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+});
+
+export default GerenciarDespesa;

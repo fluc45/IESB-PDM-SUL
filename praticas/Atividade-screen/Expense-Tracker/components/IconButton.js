@@ -1,20 +1,18 @@
-import React from "react";
-import { Pressable, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Pressable } from "react-native";
 
-function IconButton(icon, size, color, onPress) {
+function IconButton({ icon, size, color, onPress }) {
   return (
-    <View>
-      <Pressable
-        onPress={() => { pressed }}
-        style={({ pressed }) => [
-          {
-            backgroundColor: pressed ? "{rgb(210, 230, 255), opacity: 0.5}" : "white",
-          },
-        ]}
-      >
-        <ion-icon name={icon} size={size} color={color}></ion-icon>
-      </Pressable>
-    </View>
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => ({
+        marginRight: 8,
+        opacity: pressed ? 0.5 : 1,
+      })}
+    >
+      <Ionicons name={icon} size={size} color={color} />
+    </Pressable>
   );
 }
 

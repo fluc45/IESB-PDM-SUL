@@ -1,5 +1,19 @@
+import { StyleSheet, Text, View } from "react-native";
+
 function TodasDespesas() {
-    return
+    return (
+        <View style={styles.container}>
+            <Text>Todas as Despesas</Text>
+        </View>
+    );
 }
 
-export default TodasDespesas
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+});
+
+export default TodasDespesas;
