@@ -1,4 +1,5 @@
 import { Text, FlatList, View } from "react-native";
+import DespesaItem from "./DespesaItem";
 
 function renderDespesaItem(itemData) {
   return (
@@ -13,7 +14,7 @@ function DespesaLista(despesas) {
   return (
     <FlatList
       data={despesas}
-      renderItem={renderDespesaItem}
+      renderItem={DespesaItem}
       keyExtractor={(item) => item.id}
     />
   );
