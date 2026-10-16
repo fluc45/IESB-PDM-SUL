@@ -1,20 +1,27 @@
-import { Text, FlatList, View } from "react-native";
+import { FlatList, StyleSheet, Text } from "react-native";
 import DespesaItem from "./DespesaItem";
 
-function renderDespesaItem(itemData) {
+function DespesaLista({ despesas }) {
   return (
-    <View>
-      <Text>{itemData.item.descricao}</Text>
-      <Text>R$ {itemData.item.valor}</Text>
-    </View>
+    <FlatList
+      data={despesas}
+      renderItem={DespesaItem}
+      keyExtractor={(item) => item.id}
+      ListEmptyComponent={
+        <Text style={styles.mensagemVazia}>
+          Nenhuma despesa encontrada para esta categoria.
+        </Text>
+      }
+    />
   );
 }
 
-function DespesaLista({despesas}) {
-  return (
-    <FlatList data={despesas} renderItem={DespesaItem} 
-    keyExtractor={(item) => item.id} />
-  );
-}
+const styles = StyleSheet.create({
+  mensagemVazia: {
+    color: "#666666",
+    paddingVertical: 20,
+    textAlign: "center",
+  },
+});
 
 export default DespesaLista;

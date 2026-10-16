@@ -1,31 +1,44 @@
 import { StyleSheet, Text, View } from "react-native";
 import DespesaSaida from "../components/despesa/DespesaSaida"
+import SeletorCategoria from "../components/despesa/SeletorCategoria";
+import {
+  CATEGORIAS_DESPESA,
+  useDespesas,
+} from "../DespesasContext";
+import { useState } from "react";
 
 function TodasDespesas() {
-  const DUMMY_DESPESAS = [
-    {
-      id: "1",
-      descricao: "Conta de luz",
-      valor: 100.99,
-      data: new Date(2026, 9, 11),
-    },
-    {
-      id: "2",
-      descricao: "Conta de Agua",
-      valor: 40.99,
-      data: new Date(2026, 9, 10),
-    },
-  ];
+  const { despesas } = useDespesas();
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState("Todas");
+  const despesasFiltradas = despesas.filter(
+    (despesa) =>
+      categoriaSelecionada === "Todas" ||
+      despesa.categoria === categoriaSelecionada,
+  );
+
   return (
-<DespesaSaida despesas={DUMMY_DESPESAS} periodo={'Total'}/>
+    <View style={styles.container}>
+      <Text style={styles.label}>Filtrar por categoria</Text>
+      <SeletorCategoria
+        categorias={CATEGORIAS_DESPESA}
+        selecionada={categoriaSelecionada}
+        onSelecionar={setCategoriaSelecionada}
+        incluirTodas
+      />
+      <DespesaSaida despesas={despesasFiltradas} periodo="Total" />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 12,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 8,
   },
 });
 

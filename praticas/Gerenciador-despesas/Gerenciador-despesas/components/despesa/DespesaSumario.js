@@ -7,7 +7,9 @@ function DespesaSumario({despesas, periodo}) {
   return (
     <View style={styles.container}>
       <Text style={styles.texto}>{periodo}</Text>
-      <Text style={styles.texto}>R$ {somaDespesas.toFixed(2)}</Text>
+      <Text style={[styles.texto, somaDespesas > 200 && styles.valorAlerta]}>
+        R$ {somaDespesas.toFixed(2)}
+      </Text>
     </View>
   );
 }
@@ -23,6 +25,9 @@ const styles = StyleSheet.create({
   texto: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  valorAlerta: {
+    color: '#ff4d4f',
   },
 });
 

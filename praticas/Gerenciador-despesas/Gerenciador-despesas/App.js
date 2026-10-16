@@ -7,6 +7,7 @@ import IconButton from "./components/IconButton";
 import DespesasRecentes from "./screens/DespesasRecentes";
 import TodasDespesas from "./screens/TodasDespesas";
 import GerenciarDespesa from "./screens/GerenciarDespesa";
+import { DespesasProvider } from "./DespesasContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -54,20 +55,22 @@ function BottomTabScreen() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StatusBar style="auto" />
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Despesas"
-          component={BottomTabScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="GerenciarDespesa"
-          component={GerenciarDespesa}
-          options={{ title: "Gerenciar Despesa" }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <DespesasProvider>
+      <NavigationContainer>
+        <StatusBar style="auto" />
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Despesas"
+            component={BottomTabScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="GerenciarDespesa"
+            component={GerenciarDespesa}
+            options={{ title: "Gerenciar Despesa" }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </DespesasProvider>
   );
 }
