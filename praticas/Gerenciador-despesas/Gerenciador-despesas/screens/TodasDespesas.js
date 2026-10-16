@@ -7,13 +7,13 @@ function TodasDespesas() {
       id: "1",
       descricao: "Conta de luz",
       valor: 100.99,
-      data: new Date(2025, 2, 11),
+      data: new Date(2026, 9, 11),
     },
     {
       id: "2",
       descricao: "Conta de Agua",
       valor: 40.99,
-      data: new Date(2025, 4, 10),
+      data: new Date(2026, 9, 10),
     },
   ];
   return (

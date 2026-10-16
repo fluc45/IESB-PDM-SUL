@@ -5,18 +5,15 @@ function renderDespesaItem(itemData) {
   return (
     <View>
       <Text>{itemData.item.descricao}</Text>
-      <Text>{itemData.item.valor}</Text>
+      <Text>R$ {itemData.item.valor}</Text>
     </View>
   );
 }
 
-function DespesaLista(despesas) {
+function DespesaLista({despesas}) {
   return (
-    <FlatList
-      data={despesas}
-      renderItem={DespesaItem}
-      keyExtractor={(item) => item.id}
-    />
+    <FlatList data={despesas} renderItem={DespesaItem} 
+    keyExtractor={(item) => item.id} />
   );
 }
 
