@@ -1,41 +1,48 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useMemo, useState } from "react";
+import { StyleSheet, Text, useColorScheme, useWindowDimensions, View } from "react-native";
 import DespesaSaida from "../components/despesa/DespesaSaida";
 import SeletorCategoria from "../components/despesa/SeletorCategoria";
-import {
-  CATEGORIAS_DESPESA,
-  useDespesas,
-} from "../DespesasContext";
-import { useState } from "react";
+import { CATEGORIAS_DESPESA, useExpenses } from "../store/expenses-context";
+import { getTheme } from "../constants/theme";
 
-function DespesasRecentes() {
-  const { despesas } = useDespesas();
+function DespesasRecentes({ navigation }) {
+  const { expenses } = useExpenses();
   const [categoriaSelecionada, setCategoriaSelecionada] = useState("Todas");
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme === "dark");
+  const { width } = useWindowDimensions();
+  const numColumns = width > 600 ? 2 : 1;
 
-  function filtrarUltimos7Dias(despesas) {
+  const despesasFiltradas = useMemo(() => {
     const hoje = new Date();
     const seteDiasAtras = new Date();
     seteDiasAtras.setDate(hoje.getDate() - 7);
 
-    return despesas.filter((despesa) => {
-      return despesa.data >= seteDiasAtras && despesa.data <= hoje;
+    return expenses.filter((despesa) => {
+      const dataDespesa = new Date(despesa.date ?? despesa.data);
+      const naUltimaSemana = dataDespesa >= seteDiasAtras && dataDespesa <= hoje;
+      const categoriaCorreta = categoriaSelecionada === "Todas" || despesa.category === categoriaSelecionada;
+      return naUltimaSemana && categoriaCorreta;
     });
-  }
-  const despesasFiltradas = filtrarUltimos7Dias(despesas).filter(
-    (despesa) =>
-      categoriaSelecionada === "Todas" ||
-      despesa.categoria === categoriaSelecionada,
-  );
+  }, [categoriaSelecionada, expenses]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Filtrar por categoria</Text>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.label, { color: theme.text }]}>Filtrar por categoria</Text>
       <SeletorCategoria
         categorias={CATEGORIAS_DESPESA}
         selecionada={categoriaSelecionada}
         onSelecionar={setCategoriaSelecionada}
         incluirTodas
+        theme={theme}
       />
-      <DespesaSaida despesas={despesasFiltradas} periodo="Últimos 7 dias" />
+      <DespesaSaida
+        despesas={despesasFiltradas}
+        periodo="Últimos 7 dias"
+        onPressItem={(id) => navigation.navigate("GerenciarDespesa", { expenseId: id })}
+        theme={theme}
+        numColumns={numColumns}
+      />
     </View>
   );
 }
@@ -47,7 +54,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "700",
     marginBottom: 8,
   },
 });

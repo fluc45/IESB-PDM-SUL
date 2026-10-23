@@ -5,6 +5,7 @@ function SeletorCategoria({
   selecionada,
   onSelecionar,
   incluirTodas = false,
+  theme,
 }) {
   const opcoes = incluirTodas ? ["Todas", ...categorias] : categorias;
 
@@ -19,9 +20,14 @@ function SeletorCategoria({
             accessibilityRole="button"
             accessibilityState={{ selected: ativa }}
             onPress={() => onSelecionar(categoria)}
-            style={[styles.opcao, ativa && styles.opcaoSelecionada]}
+            style={[
+              styles.opcao,
+              {
+                backgroundColor: ativa ? theme.primary : theme.chip,
+              },
+            ]}
           >
-            <Text style={[styles.textoOpcao, ativa && styles.textoSelecionado]}>
+            <Text style={[styles.textoOpcao, { color: ativa ? "#fff" : theme.chipText }]}>
               {categoria}
             </Text>
           </Pressable>
@@ -38,21 +44,13 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   opcao: {
+    borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: "#eeeeee",
-  },
-  opcaoSelecionada: {
-    backgroundColor: "#2f6fed",
   },
   textoOpcao: {
-    color: "#333333",
     fontSize: 13,
-  },
-  textoSelecionado: {
-    color: "#ffffff",
-    fontWeight: "bold",
+    fontWeight: "600",
   },
 });
 

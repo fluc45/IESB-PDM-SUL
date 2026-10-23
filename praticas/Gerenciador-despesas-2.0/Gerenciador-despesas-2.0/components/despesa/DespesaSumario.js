@@ -1,13 +1,15 @@
-import { Text, View, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-function DespesaSumario({despesas, periodo}) {
-  const somaDespesas = despesas.reduce((total, despesa) => {
-    return total + despesa.valor;
-  }, 0);
+function DespesaSumario({ despesas, periodo, theme }) {
+  const somaDespesas = despesas.reduce((total, despesa) => total + Number(despesa.amount ?? despesa.valor ?? 0), 0);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.texto}>{periodo}</Text>
-      <Text style={[styles.texto, somaDespesas > 200 && styles.valorAlerta]}>
+    <View style={[styles.container, { backgroundColor: theme.surfaceAlt, borderColor: theme.border }]}>
+      <View>
+        <Text style={[styles.label, { color: theme.muted }]}>{periodo}</Text>
+        <Text style={[styles.quantidade, { color: theme.text }]}>{despesas.length} despesas</Text>
+      </View>
+      <Text style={[styles.total, { color: somaDespesas > 200 ? theme.alert : theme.primary }]}>
         R$ {somaDespesas.toFixed(2)}
       </Text>
     </View>
@@ -16,18 +18,27 @@ function DespesaSumario({despesas, periodo}) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
-    backgroundColor: '#888888',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 12,
+    marginBottom: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
   },
-  texto: {
-    color: 'white',
-    fontWeight: 'bold',
+  label: {
+    fontSize: 12,
+    fontWeight: "600",
+    marginBottom: 4,
   },
-  valorAlerta: {
-    color: '#ff4d4f',
+  quantidade: {
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  total: {
+    fontSize: 18,
+    fontWeight: "700",
   },
 });
 

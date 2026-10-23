@@ -1,64 +1,84 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 function getDataFormatada(data) {
-  return (
-    data.getDate() + "/" + (data.getMonth() + 1) + "/" + data.getFullYear()
-  );
+  const parsedDate = data instanceof Date ? data : new Date(data);
+  return `${parsedDate.getDate()}/${parsedDate.getMonth() + 1}/${parsedDate.getFullYear()}`;
 }
 
-function DespesaItem({ item }) {
+function DespesaItem({ item, onPress, theme, numColumns = 1 }) {
+  const value = Number(item.amount ?? item.valor ?? 0);
+
   return (
-    <View style={styles.itemContainer}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.itemContainer,
+        numColumns > 1 && styles.gridItem,
+        {
+          backgroundColor: theme.surface,
+          borderColor: theme.border,
+          opacity: pressed ? 0.85 : 1,
+          shadowColor: theme.shadow,
+        },
+      ]}
+    >
       <View style={styles.dataCategoria}>
-        <Text style={styles.data}>{getDataFormatada(item.data)}</Text>
-        <Text style={styles.categoria}>{item.categoria}</Text>
+        <Text style={[styles.data, { color: theme.muted }]}>{getDataFormatada(item.date ?? item.data)}</Text>
+        <Text style={[styles.categoria, { backgroundColor: theme.primarySoft, color: theme.primary }]}>
+          {item.category ?? item.categoria}
+        </Text>
       </View>
       <View style={styles.detalhes}>
-        <Text style={styles.descricao}>{item.descricao}</Text>
-        <Text style={styles.valor}>R$ {item.valor.toFixed(2)}</Text>
+        <Text style={[styles.descricao, { color: theme.text }]}>{item.description ?? item.descricao}</Text>
+        <Text style={[styles.valor, { color: theme.text }]}>R$ {value.toFixed(2)}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   itemContainer: {
+    borderWidth: 1,
+    borderRadius: 12,
+    marginBottom: 10,
     padding: 12,
-    marginVertical: 5,
-    backgroundColor: "#f4f4f4",
-    borderRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  gridItem: {
+    flex: 1,
+    marginHorizontal: 4,
   },
   dataCategoria: {
-    flexDirection: "row",
     alignItems: "center",
+    flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 8,
   },
   data: {
-    color: "#555555",
     fontSize: 12,
   },
   categoria: {
-    backgroundColor: "#e0e0e0",
     borderRadius: 12,
-    color: "#333333",
     fontSize: 12,
     overflow: "hidden",
     paddingHorizontal: 10,
     paddingVertical: 4,
   },
   detalhes: {
+    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
   },
   descricao: {
     flex: 1,
-    fontWeight: "bold",
+    fontWeight: "700",
     marginRight: 12,
   },
   valor: {
-    fontWeight: "bold",
+    fontWeight: "700",
   },
 });
 

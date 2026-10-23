@@ -7,7 +7,6 @@ import IconButton from "./components/IconButton";
 import DespesasRecentes from "./screens/DespesasRecentes";
 import TodasDespesas from "./screens/TodasDespesas";
 import GerenciarDespesa from "./screens/GerenciarDespesa";
-import { DespesasProvider } from "./DespesasContext";
 import { ExpensesContextProvider } from "./store/expenses-context";
 
 const Tab = createBottomTabNavigator();
@@ -56,7 +55,7 @@ function BottomTabScreen() {
 
 export default function App() {
   return (
-    <DespesasProvider>
+    <ExpensesContextProvider>
       <NavigationContainer>
         <StatusBar style="auto" />
         <Stack.Navigator>
@@ -68,10 +67,10 @@ export default function App() {
           <Stack.Screen
             name="GerenciarDespesa"
             component={GerenciarDespesa}
-            options={{ title: "Gerenciar Despesa" }}
+            options={{ title: "Nova despesa" }}
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </DespesasProvider>
+    </ExpensesContextProvider>
   );
 }
