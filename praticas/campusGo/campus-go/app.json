@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "campus-go",
+    "slug": "campus-go",
+    "scheme": "campusgo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O CampusGo precisa acessar suas fotos para atualizar sua imagem de perfil.",
+          "cameraPermission": "O CampusGo precisa acessar a câmera para tirar sua foto de perfil.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "O CampusGo usa sua localização para registrar seu check-in no campus."
+        }
+      ]
+    ]
+  }
+}
